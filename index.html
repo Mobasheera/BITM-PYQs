@@ -31,18 +31,16 @@
                 iframe.style.display = 'none';
                 iframe.src = url;
                 iframe.onload = () => {
-                    document.getElementById('status').innerHTML += `<p class='text-green-400'>✅ Downloaded: ${url}</p>`;
                     resolve(true);
                 };
                 iframe.onerror = () => {
-                    document.getElementById('status').innerHTML += `<p class='text-red-400'>❌ Not found: ${url}</p>`;
                     resolve(false);
                 };
                 document.body.appendChild(iframe);
                 setTimeout(() => {
                     document.body.removeChild(iframe);
                     resolve(false);
-                }, 5000); // Timeout to remove iframe even if no error event fires
+                }, 5000);
             });
         }
 
@@ -79,9 +77,9 @@
             await Promise.all(downloadPromises);
 
             if (downloadedLinks === 0) {
-                document.getElementById('status').innerHTML += `<p class='text-yellow-400'>⚠️ No valid PDFs found after checking ${totalLinks} links.</p>`;
+                document.getElementById('status').innerHTML = `<p class='text-yellow-400'>⚠️ No valid PDFs found after checking ${totalLinks} links.</p>`;
             } else {
-                document.getElementById('status').innerHTML += `<p class='text-green-400'>✅ Download process complete. Downloaded ${downloadedLinks} out of ${totalLinks} links.</p>`;
+                document.getElementById('status').innerHTML = `<p class='text-green-400'>✅ Download complete. ${downloadedLinks} file(s) downloaded successfully.</p>`;
             }
         }
     </script>
