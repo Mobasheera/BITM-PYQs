@@ -52,11 +52,8 @@ cd BITM-PYQs
 
 ### 🎯 **Live Counters**
 
-## 🔢 Total Visits  : 
-<a href="https://www.hitwebcounter.com" target="_blank">
-  <img src="https://hitwebcounter.com/counter/counter.php?page=19230188&style=0007&nbdigits=3&type=page&initCount=23" 
-       title="Counter Widget" Alt="Visit counter For Websites" border="0"/>
-</a>
+## 🔢 Total Visits:
+![Visitor Count](https://shields.io/endpoint?url=https://api.countapi.xyz/hit/Mobasheera/BITM-PYQs)
 
 ---
 
