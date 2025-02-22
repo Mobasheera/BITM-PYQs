@@ -65,12 +65,9 @@
                         const fileName = `${subject} (${semester}_${season}${year.toString().slice(-2)}).pdf`;
                         const fullUrl = `${baseUrl}${folderPart}${fileName}`;
                         totalLinks++;
-
                         downloadPromises.push(
                             openAndDownload(fullUrl).then((downloaded) => {
-                                if (downloaded) {
-                                    downloadedLinks++;
-                                }
+                                if (downloaded) downloadedLinks++;
                             })
                         );
                     }
@@ -79,11 +76,8 @@
 
             await Promise.all(downloadPromises);
 
-            if (downloadedLinks === 0) {
-                document.getElementById('status').innerHTML = `<p class='text-yellow-400'>⚠️ No valid PDFs found after checking ${totalLinks} links.</p>`;
-            } else {
-                document.getElementById('status').innerHTML = `<p class='text-green-400'>✅ Download complete. ${downloadedLinks} file(s) downloaded successfully out of ${totalLinks} checked.</p>`;
-            }
+            // Just display the "Download complete." message
+            document.getElementById('status').innerHTML = "<p class='text-green-400'>✅ Download complete.</p>";
         }
     </script>
 
