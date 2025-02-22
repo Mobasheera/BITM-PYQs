@@ -1,55 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BITM-PYQs Downloader</title>
-    <style>
-        body {
-            background-color: #000;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-        select, button {
-            padding: 10px;
-            margin: 10px;
-            width: 300px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: none;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        #status {
-            margin-top: 20px;
-            font-size: 14px;
-            text-align: center;
-        }
-    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>BITM-PYQs Downloader</h1>
-    <select id="subjectSelect">
-        <option value="MA107 MATHEMATICS-II">MA107 MATHEMATICS-II</option>
-        <option value="PH113 PHYSICS">PH113 PHYSICS</option>
-        <option value="BE101 BIOLOGICAL SCIENCE FOR ENGINEERS">BE101 BIOLOGICAL SCIENCE FOR ENGINEERS</option>
-        <option value="CS101 PROGRAMMING FOR PROBLEM SOLVING">CS101 PROGRAMMING FOR PROBLEM SOLVING</option>
-        <option value="EE101 BASIC OF ELECTRICAL ENGINEERING">EE101 BASIC OF ELECTRICAL ENGINEERING</option>
-    </select>
-    <button onclick="downloadPapers()">Download PDFs</button>
 
-    <div id="status"></div>
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-5">
+    <div class="bg-gray-800 rounded-2xl shadow-2xl p-10 w-full max-w-md text-center space-y-6 animate-fade-in">
+        <h1 class="text-3xl font-semibold tracking-wide">BITM-PYQs Downloader</h1>
+        <select id="subjectSelect" class="w-full p-3 bg-gray-700 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            <option value="MA107 MATHEMATICS-II">MA107 MATHEMATICS-II</option>
+            <option value="PH113 PHYSICS">PH113 PHYSICS</option>
+            <option value="BE101 BIOLOGICAL SCIENCE FOR ENGINEERS">BE101 BIOLOGICAL SCIENCE FOR ENGINEERS</option>
+            <option value="CS101 PROGRAMMING FOR PROBLEM SOLVING">CS101 PROGRAMMING FOR PROBLEM SOLVING</option>
+            <option value="EE101 BASIC OF ELECTRICAL ENGINEERING">EE101 BASIC OF ELECTRICAL ENGINEERING</option>
+        </select>
+        <button onclick="downloadPapers()" class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition-transform transform hover:-translate-y-1 shadow-lg">
+            ⬇️ Download PDFs
+        </button>
+        <div id="status" class="text-sm text-gray-400"></div>
+    </div>
 
     <script>
         async function checkAndDownload(url) {
@@ -62,10 +35,10 @@
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
-                    document.getElementById('status').innerHTML += `<p>Downloaded: ${url}</p>`;
+                    document.getElementById('status').innerHTML += `<p class='text-green-400'>✅ Downloaded: ${url}</p>`;
                 }
             } catch (error) {
-                console.error(`Failed: ${url}`);
+                console.error(`❌ Failed: ${url}`);
             }
         }
 
@@ -75,8 +48,8 @@
             const years = [2020, 2021, 2022, 2023, 2024, 2025];
             const semesters = ["MID", "END"];
             const seasons = ["SP", "MO"];
-            
-            document.getElementById('status').innerHTML = "<p>Checking for available PDFs...</p>";
+
+            document.getElementById('status').innerHTML = "<p class='animate-pulse'>🔄 Checking for available PDFs...</p>";
 
             for (let year of years) {
                 for (let semester of semesters) {
@@ -90,8 +63,19 @@
                 }
             }
 
-            document.getElementById('status').innerHTML += "<p>Download process complete.</p>";
+            document.getElementById('status').innerHTML += "<p class='text-green-400'>✅ Download process complete.</p>";
         }
     </script>
+
+    <style>
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 0.6s ease-out;
+        }
+    </style>
 </body>
+
 </html>
