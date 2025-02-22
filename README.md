@@ -34,11 +34,11 @@ cd BITM-PYQs
 
 ### ⚡ **Tech Stack**
 
-- 🌐 **HTML5**  
-- 🎨 **TailwindCSS** (via CDN)  
-- 💡 **Vanilla JavaScript**  
-- 📊 **CountAPI** for tracking downloads  
-- 🔥 **GitHub Pages** for deployment  
+- **HTML5**  
+-  **TailwindCSS** (via CDN)  
+- **Vanilla JavaScript**  
+- **CountAPI** for tracking downloads  
+- **GitHub Pages** for deployment   
 
 ---
 
