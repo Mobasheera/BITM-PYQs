@@ -36,9 +36,14 @@
                     a.click();
                     document.body.removeChild(a);
                     document.getElementById('status').innerHTML += `<p class='text-green-400'>✅ Downloaded: ${url}</p>`;
+                    return true;
+                } else {
+                    document.getElementById('status').innerHTML += `<p class='text-red-400'>❌ Not found: ${url}</p>`;
+                    return false;
                 }
             } catch (error) {
                 console.error(`❌ Failed: ${url}`);
+                return false;
             }
         }
 
@@ -51,19 +56,27 @@
 
             document.getElementById('status').innerHTML = "<p class='animate-pulse'>🔄 Checking for available PDFs...</p>";
 
+            let totalLinks = 0;
+            let downloadedLinks = 0;
+
             for (let year of years) {
-                for (let semester of semesters) {
-                    for (let season of seasons) {
-                        const folderPart = `${season}${year} QP/`;
+                for (let season of seasons) {
+                    const folderPart = `${season}${year} QP/`;
+                    for (let semester of semesters) {
                         const fileName = `${subject} (${semester}_${season}${year.toString().slice(-2)}).pdf`;
                         const fullUrl = `${baseUrl}${folderPart}${fileName}`;
-
-                        await checkAndDownload(fullUrl);
+                        totalLinks++;
+                        const downloaded = await checkAndDownload(fullUrl);
+                        if (downloaded) downloadedLinks++;
                     }
                 }
             }
 
-            document.getElementById('status').innerHTML += "<p class='text-green-400'>✅ Download process complete.</p>";
+            if (downloadedLinks === 0) {
+                document.getElementById('status').innerHTML += `<p class='text-yellow-400'>⚠️ No valid PDFs found after checking ${totalLinks} links.</p>`;
+            } else {
+                document.getElementById('status').innerHTML += `<p class='text-green-400'>✅ Download process complete. Downloaded ${downloadedLinks} out of ${totalLinks} links.</p>`;
+            }
         }
     </script>
 
@@ -72,6 +85,7 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
         .animate-fade-in {
             animation: fade-in 0.6s ease-out;
         }
