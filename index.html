@@ -27,14 +27,17 @@
     <script>
         async function checkAndDownload(url) {
             try {
-                const response = await fetch(url, { method: 'HEAD' });
+                const response = await fetch(url, { method: 'GET' }); // Changed to GET for better validation
                 if (response.ok) {
+                    const blob = await response.blob();
+                    const urlBlob = window.URL.createObjectURL(blob);
                     const a = document.createElement('a');
-                    a.href = url;
+                    a.href = urlBlob;
                     a.download = url.split('/').pop();
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
+                    window.URL.revokeObjectURL(urlBlob);
                     document.getElementById('status').innerHTML += `<p class='text-green-400'>✅ Downloaded: ${url}</p>`;
                     return true;
                 } else {
@@ -42,7 +45,8 @@
                     return false;
                 }
             } catch (error) {
-                console.error(`❌ Failed: ${url}`);
+                console.error(`❌ Failed: ${url}`, error);
+                document.getElementById('status').innerHTML += `<p class='text-red-400'>❌ Error fetching: ${url}</p>`;
                 return false;
             }
         }
@@ -59,6 +63,8 @@
             let totalLinks = 0;
             let downloadedLinks = 0;
 
+            const downloadPromises = [];
+
             for (let year of years) {
                 for (let season of seasons) {
                     const folderPart = `${season}${year} QP/`;
@@ -66,11 +72,16 @@
                         const fileName = `${subject} (${semester}_${season}${year.toString().slice(-2)}).pdf`;
                         const fullUrl = `${baseUrl}${folderPart}${fileName}`;
                         totalLinks++;
-                        const downloaded = await checkAndDownload(fullUrl);
-                        if (downloaded) downloadedLinks++;
+                        downloadPromises.push(
+                            checkAndDownload(fullUrl).then((downloaded) => {
+                                if (downloaded) downloadedLinks++;
+                            })
+                        );
                     }
                 }
             }
+
+            await Promise.all(downloadPromises);
 
             if (downloadedLinks === 0) {
                 document.getElementById('status').innerHTML += `<p class='text-yellow-400'>⚠️ No valid PDFs found after checking ${totalLinks} links.</p>`;
