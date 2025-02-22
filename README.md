@@ -53,11 +53,10 @@ cd BITM-PYQs
 ### 🎯 **Live Counters**
 
 ## 🌐 Total Website Visits
-![Website Visits](https://api.countapi.xyz/get/Mobasheera/BITM-PYQs-visit?amount=1)
+![Website Visits](https://img.shields.io/badge/Visits-0-blue?style=for-the-badge&logo=github&labelColor=black&link=https://api.countapi.xyz/hit/Mobasheera/BITM-PYQs-visit)
 
 ## 📥 Total Downloads
-![Downloads](https://api.countapi.xyz/get/Mobasheera/BITM-PYQs-download?amount=1)
-
+![Downloads](https://img.shields.io/badge/Downloads-0-green?style=for-the-badge&logo=github&labelColor=black&link=https://api.countapi.xyz/hit/Mobasheera/BITM-PYQs-download)
 ---
 
 ### 🤝 **Contributing**
