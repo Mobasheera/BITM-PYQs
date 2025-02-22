@@ -11,11 +11,9 @@
 
 <body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-5">
     <div class="bg-gray-800 rounded-2xl shadow-2xl p-10 w-full max-w-md text-center space-y-6 animate-fade-in">
-        <!-- Add logo above the heading -->
         <img src="bitlogo.png" alt="BITM Logo" width="250" height="250" class="mx-auto mb-4">
-        
         <h1 class="text-3xl font-semibold tracking-wide">BITM-PYQs Downloader</h1>
-        
+
         <select id="subjectSelect" class="w-full p-3 bg-gray-700 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-500">
             <option value="MA107 MATHEMATICS-II">MA107 MATHEMATICS-II</option>
             <option value="PH113 PHYSICS">PH113 PHYSICS</option>
@@ -23,6 +21,7 @@
             <option value="CS101 PROGRAMMING FOR PROBLEM SOLVING">CS101 PROGRAMMING FOR PROBLEM SOLVING</option>
             <option value="EE101 BASIC OF ELECTRICAL ENGINEERING">EE101 BASIC OF ELECTRICAL ENGINEERING</option>
         </select>
+
         <button onclick="downloadPapers()" class="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-lg transition-transform transform hover:-translate-y-1 shadow-lg">
             ⬇️ Download PDFs
         </button>
@@ -30,17 +29,21 @@
     </div>
 
     <script>
+        async function trackVisit() {
+            await fetch("https://api.countapi.xyz/hit/bitm-pyqs/visits");
+        }
+
+        async function trackDownload() {
+            await fetch("https://api.countapi.xyz/hit/bitm-pyqs/downloads");
+        }
+
         async function openAndDownload(url) {
             return new Promise((resolve) => {
                 const iframe = document.createElement('iframe');
                 iframe.style.display = 'none';
                 iframe.src = url;
-                iframe.onload = () => {
-                    resolve(true);
-                };
-                iframe.onerror = () => {
-                    resolve(false);
-                };
+                iframe.onload = () => resolve(true);
+                iframe.onerror = () => resolve(false);
                 document.body.appendChild(iframe);
                 setTimeout(() => {
                     document.body.removeChild(iframe);
@@ -50,6 +53,7 @@
         }
 
         async function downloadPapers() {
+            trackDownload();
             const subject = document.getElementById('subjectSelect').value;
             const baseUrl = "https://www.bitmesra.ac.in/UploadedDocuments/adminexam/files/";
             const years = [2020, 2021, 2022, 2023, 2024, 2025];
@@ -58,32 +62,23 @@
 
             document.getElementById('status').innerHTML = "<p class='animate-pulse'>🔄 Checking for available PDFs...</p>";
 
-            let totalLinks = 0;
-            let downloadedLinks = 0;
-
             const downloadPromises = [];
-
             for (let year of years) {
                 for (let season of seasons) {
                     const folderPart = `${season}${year} QP/`;
                     for (let semester of semesters) {
                         const fileName = `${subject} (${semester}_${season}${year.toString().slice(-2)}).pdf`;
                         const fullUrl = `${baseUrl}${folderPart}${fileName}`;
-                        totalLinks++;
-                        downloadPromises.push(
-                            openAndDownload(fullUrl).then((downloaded) => {
-                                if (downloaded) downloadedLinks++;
-                            })
-                        );
+                        downloadPromises.push(openAndDownload(fullUrl));
                     }
                 }
             }
 
             await Promise.all(downloadPromises);
-
-            // Just display the "Download complete." message
             document.getElementById('status').innerHTML = "<p class='text-green-400'>✅ Download complete.</p>";
         }
+
+        window.onload = trackVisit;
     </script>
 
     <style>
@@ -91,10 +86,7 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        .animate-fade-in {
-            animation: fade-in 0.6s ease-out;
-        }
+        .animate-fade-in { animation: fade-in 0.6s ease-out; }
     </style>
 </body>
 
