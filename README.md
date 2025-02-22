@@ -52,8 +52,11 @@ cd BITM-PYQs
 
 ### 🎯 **Live Counters**
 
-## 🔢 Total Visits:
-![Visitor Count](https://shields.io/endpoint?url=https://api.countapi.xyz/hit/Mobasheera/BITM-PYQs)
+## 🌐 Total Website Visits
+![Website Visits](https://api.countapi.xyz/get/Mobasheera/BITM-PYQs-visit?amount=1)
+
+## 📥 Total Downloads
+![Downloads](https://api.countapi.xyz/get/Mobasheera/BITM-PYQs-download?amount=1)
 
 ---
 
