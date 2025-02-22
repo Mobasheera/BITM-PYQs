@@ -25,30 +25,25 @@
     </div>
 
     <script>
-        async function checkAndDownload(url) {
-            try {
-                const response = await fetch(url, { method: 'GET' }); // Changed to GET for better validation
-                if (response.ok) {
-                    const blob = await response.blob();
-                    const urlBlob = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = urlBlob;
-                    a.download = url.split('/').pop();
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    window.URL.revokeObjectURL(urlBlob);
+        async function openAndDownload(url) {
+            return new Promise((resolve) => {
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = url;
+                iframe.onload = () => {
                     document.getElementById('status').innerHTML += `<p class='text-green-400'>✅ Downloaded: ${url}</p>`;
-                    return true;
-                } else {
+                    resolve(true);
+                };
+                iframe.onerror = () => {
                     document.getElementById('status').innerHTML += `<p class='text-red-400'>❌ Not found: ${url}</p>`;
-                    return false;
-                }
-            } catch (error) {
-                console.error(`❌ Failed: ${url}`, error);
-                document.getElementById('status').innerHTML += `<p class='text-red-400'>❌ Error fetching: ${url}</p>`;
-                return false;
-            }
+                    resolve(false);
+                };
+                document.body.appendChild(iframe);
+                setTimeout(() => {
+                    document.body.removeChild(iframe);
+                    resolve(false);
+                }, 5000); // Timeout to remove iframe even if no error event fires
+            });
         }
 
         async function downloadPapers() {
@@ -73,7 +68,7 @@
                         const fullUrl = `${baseUrl}${folderPart}${fileName}`;
                         totalLinks++;
                         downloadPromises.push(
-                            checkAndDownload(fullUrl).then((downloaded) => {
+                            openAndDownload(fullUrl).then((downloaded) => {
                                 if (downloaded) downloadedLinks++;
                             })
                         );
