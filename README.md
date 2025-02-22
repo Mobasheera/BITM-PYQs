@@ -52,8 +52,11 @@ cd BITM-PYQs
 
 ### 🎯 **Live Counters**
 
-![Visitor Count](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https://<your-github-username>.github.io/BITM-PYQs&count_bg=%2379C83D&title_bg=%23555555&icon=github.svg&icon_color=%23E7E7E7&title=Visitors&edge_flat=false)  
-📦 **Downloads so far:** (updated live on the website)  
+## 🔢 Total Visits  : 
+<a href="https://www.hitwebcounter.com" target="_blank">
+  <img src="https://hitwebcounter.com/counter/counter.php?page=19230188&style=0007&nbdigits=3&type=page&initCount=23" 
+       title="Counter Widget" Alt="Visit counter For Websites" border="0"/>
+</a>
 
 ---
 
