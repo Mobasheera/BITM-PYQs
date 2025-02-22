@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BITM-PYQs Downloader</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        select, button {
+            padding: 10px;
+            margin: 10px;
+            width: 300px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #status {
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>BITM-PYQs Downloader</h1>
+    <select id="subjectSelect">
+        <option value="MA107 MATHEMATICS-II">MA107 MATHEMATICS-II</option>
+        <option value="PH113 PHYSICS">PH113 PHYSICS</option>
+        <option value="BE101 BIOLOGICAL SCIENCE FOR ENGINEERS">BE101 BIOLOGICAL SCIENCE FOR ENGINEERS</option>
+        <option value="CS101 PROGRAMMING FOR PROBLEM SOLVING">CS101 PROGRAMMING FOR PROBLEM SOLVING</option>
+        <option value="EE101 BASIC OF ELECTRICAL ENGINEERING">EE101 BASIC OF ELECTRICAL ENGINEERING</option>
+    </select>
+    <button onclick="downloadPapers()">Download PDFs</button>
+
+    <div id="status"></div>
+
+    <script>
+        async function checkAndDownload(url) {
+            try {
+                const response = await fetch(url, { method: 'HEAD' });
+                if (response.ok) {
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = url.split('/').pop();
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    document.getElementById('status').innerHTML += `<p>Downloaded: ${url}</p>`;
+                }
+            } catch (error) {
+                console.error(`Failed: ${url}`);
+            }
+        }
+
+        async function downloadPapers() {
+            const subject = document.getElementById('subjectSelect').value;
+            const baseUrl = "https://www.bitmesra.ac.in/UploadedDocuments/adminexam/files/";
+            const years = [2020, 2021, 2022, 2023, 2024, 2025];
+            const semesters = ["MID", "END"];
+            const seasons = ["SP", "MO"];
+            
+            document.getElementById('status').innerHTML = "<p>Checking for available PDFs...</p>";
+
+            for (let year of years) {
+                for (let semester of semesters) {
+                    for (let season of seasons) {
+                        const folderPart = `${season}${year} QP/`;
+                        const fileName = `${subject} (${semester}_${season}${year.toString().slice(-2)}).pdf`;
+                        const fullUrl = `${baseUrl}${folderPart}${fileName}`;
+
+                        await checkAndDownload(fullUrl);
+                    }
+                }
+            }
+
+            document.getElementById('status').innerHTML += "<p>Download process complete.</p>";
+        }
+    </script>
+</body>
+</html>
