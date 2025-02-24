@@ -42,14 +42,6 @@ cd BITM-PYQs
 
 ---
 
-### 💡 **Screenshots**
-
-| Desktop View                             | Mobile View                            |
-| ---------------------------------------- | -------------------------------------- |
-| ![Desktop](screenshots/desktop-view.png) | ![Mobile](screenshots/mobile-view.png) |
-
----
-
 ## 🎯 **Live Counters**
 
 ### 🌐 Total Website Visits
