@@ -1,6 +1,6 @@
 # 📚 **BITM-PYQs Downloader**
 
-> 🔗 [Live Demo on GitHub Pages](https://<your-github-username>.github.io/BITM-PYQs)  
+> 🔗 [Live Demo on GitHub Pages](https://mobasheera.github.io/BITM-PYQs/)  
 > A minimal web tool for downloading previous year question papers (PYQs) of BIT Mesra, designed with TailwindCSS.  
 
 ---
