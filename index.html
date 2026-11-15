@@ -1,160 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Download previous year question papers from BIT Mesra by subject and examination session.">
-    <title>BITM-PYQs Downloader</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/png" href="bitlogo.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Download previous year question papers from BIT Mesra by subject.">
+  <title>BITM-PYQs Downloader</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="icon" type="image/png" href="bitlogo.png">
 </head>
-
 <body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-5">
-    <main class="bg-gray-800 rounded-2xl shadow-2xl p-8 sm:p-10 w-full max-w-md text-center space-y-6 animate-fade-in">
-        <img src="bitlogo.png" alt="BIT Mesra logo" width="200" height="200" class="mx-auto mb-4">
-        <h1 class="text-3xl font-semibold tracking-wide">BITM-PYQs Downloader</h1>
-        <p class="text-gray-300 text-sm">Select a subject to view its available question papers.</p>
+  <main class="bg-gray-800 rounded-2xl shadow-2xl p-7 sm:p-10 w-full max-w-xl text-center space-y-5">
+    <img src="bitlogo.png" alt="BIT Mesra logo" width="180" height="180" class="mx-auto">
+    <h1 class="text-3xl font-semibold tracking-wide">BITM-PYQs Downloader</h1>
+    <p class="text-gray-300 text-sm">Search for a subject or select it from the list. All configured papers for that subject will be opened when you click Download.</p>
 
-        <label for="subjectSelect" class="sr-only">Select subject</label>
-        <select id="subjectSelect" class="w-full p-3 bg-gray-700 rounded-lg text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-            <option value="MA107 MATHEMATICS-II">MA107 MATHEMATICS-II</option>
-            <option value="PH113 PHYSICS">PH113 PHYSICS</option>
-            <option value="BE101 BIOLOGICAL SCIENCE FOR ENGINEERS">BE101 BIOLOGICAL SCIENCE FOR ENGINEERS</option>
-            <option value="CS101 PROGRAMMING FOR PROBLEM SOLVING">CS101 PROGRAMMING FOR PROBLEM SOLVING</option>
-            <option value="EE101 BASIC OF ELECTRICAL ENGINEERING">EE101 BASIC OF ELECTRICAL ENGINEERING</option>
-            <option value="EC257">EC257 ELECTROMAGNETIC FIELDS AND WAVES</option>
-        </select>
+    <label for="subjectSearch" class="block text-left text-sm font-medium text-gray-200">Search subject</label>
+    <input id="subjectSearch" type="search" placeholder="Type subject code or name..." autocomplete="off"
+      class="w-full p-3 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+    <label for="subjectSelect" class="block text-left text-sm font-medium text-gray-200">Select subject</label>
+    <select id="subjectSelect" class="w-full p-3 bg-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+      <option value="MA107 MATHEMATICS-II">MA107 MATHEMATICS-II</option>
+      <option value="PH113 PHYSICS">PH113 PHYSICS</option>
+      <option value="BE101 BIOLOGICAL SCIENCE FOR ENGINEERS">BE101 BIOLOGICAL SCIENCE FOR ENGINEERS</option>
+      <option value="CS101 PROGRAMMING FOR PROBLEM SOLVING">CS101 PROGRAMMING FOR PROBLEM SOLVING</option>
+      <option value="EE101 BASIC OF ELECTRICAL ENGINEERING">EE101 BASIC OF ELECTRICAL ENGINEERING</option>
+      <option value="EC257">EC257 ELECTROMAGNETIC FIELDS AND WAVES</option>
+    </select>
+    <button id="downloadButton" type="button" class="w-full bg-green-500 hover:bg-green-600 disabled:opacity-50 text-white font-semibold py-3 rounded-lg shadow-lg">
+      ⬇️ Download all PDFs
+    </button>
+    <div id="status" class="text-sm text-gray-300" role="status" aria-live="polite"></div>
+    <section id="downloadedSection" class="hidden text-left rounded-lg bg-gray-700 p-4">
+      <h2 class="font-semibold mb-2">Download attempts</h2>
+      <ul id="downloadedList" class="space-y-2 text-sm"></ul>
+    </section>
+    <p class="text-xs text-gray-400">Note: Your browser may ask permission to open multiple files. Cross-site PDF downloads are controlled by the archive server and browser.</p>
+  </main>
+<script>
+const EC257_PAPERS = [
+  { label: "End Semester — Spring 2023", url: "https://archive.bitmesra.ac.in/UploadedDocuments/adminexam/files/SP2023%20QP/EC257%20ELECTROMAGNETIC%20FIELDS%20AND%20WAVES%20(END_SP23).pdf" },
+  { label: "Mid Semester — Spring 2023", url: "https://archive.bitmesra.ac.in/UploadedDocuments/adminexam/files/SP2023%20QP/EC257%20ELECTROMAGNETIC%20FIELD%20AND%20WAVES%20(MID_SP23).pdf" },
+  { label: "End Semester — Spring 2022", url: "https://archive.bitmesra.ac.in/UploadedDocuments/adminexam/files/SP2022%20QP/EC257%20ELECTROMAGNETIC%20FIELDS%20AND%20WAVES%20(END_SP22).pdf" },
+  { label: "Mid Semester — Spring 2020", url: "https://archive.bitmesra.ac.in/UploadedDocuments/adminexam/files/SP2020%20QP/EC257%20ELECTROMAGNETIC%20FIELDS%20%26%20WAVES%20(MID_SP20).pdf" }
+];
+const select = document.getElementById("subjectSelect");
+const search = document.getElementById("subjectSearch");
+const button = document.getElementById("downloadButton");
+const status = document.getElementById("status");
+const section = document.getElementById("downloadedSection");
+const list = document.getElementById("downloadedList");
+const allOptions = [...select.options].map(o => ({value:o.value, text:o.text}));
 
-        <button id="downloadButton" type="button" class="w-full bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 text-white font-semibold py-3 rounded-lg transition-transform transform hover:-translate-y-1 shadow-lg">
-            ⬇️ Download PDFs
-        </button>
-        <div id="status" class="text-sm text-gray-300" role="status" aria-live="polite"></div>
-        <div id="paperList" class="hidden text-left space-y-2"></div>
-    </main>
+search.addEventListener("input", () => {
+  const q = search.value.trim().toLowerCase();
+  const current = select.value;
+  const matches = allOptions.filter(o => (o.text+" "+o.value).toLowerCase().includes(q));
+  select.replaceChildren(...matches.map(o => new Option(o.text, o.value)));
+  if (matches.some(o => o.value === current)) select.value = current;
+  else if (matches.length) select.selectedIndex = 0;
+});
 
-    <script>
-        // Papers for EC257 are linked directly because the archive uses explicit filenames
-        // and does not follow the generic URL pattern used by the other listed subjects.
-        const EC257_PAPERS = [
-            {
-                label: "End Semester — Spring 2023",
-                url: "https://archive.bitmesra.ac.in/UploadedDocuments/adminexam/files/SP2023%20QP/EC257%20ELECTROMAGNETIC%20FIELDS%20AND%20WAVES%20(END_SP23).pdf"
-            },
-            {
-                label: "Mid Semester — Spring 2023",
-                url: "https://archive.bitmesra.ac.in/UploadedDocuments/adminexam/files/SP2023%20QP/EC257%20ELECTROMAGNETIC%20FIELD%20AND%20WAVES%20(MID_SP23).pdf"
-            },
-            {
-                label: "End Semester — Spring 2022",
-                url: "https://archive.bitmesra.ac.in/UploadedDocuments/adminexam/files/SP2022%20QP/EC257%20ELECTROMAGNETIC%20FIELDS%20AND%20WAVES%20(END_SP22).pdf"
-            },
-            {
-                label: "Mid Semester — Spring 2020",
-                url: "https://archive.bitmesra.ac.in/UploadedDocuments/adminexam/files/SP2020%20QP/EC257%20ELECTROMAGNETIC%20FIELDS%20%26%20WAVES%20(MID_SP20).pdf"
-            }
-        ];
-
-        const subjectSelect = document.getElementById("subjectSelect");
-        const downloadButton = document.getElementById("downloadButton");
-        const status = document.getElementById("status");
-        const paperList = document.getElementById("paperList");
-
-        async function trackVisit() {
-            // Analytics are optional: a failed counter request must not affect the downloader.
-            try {
-                await fetch("https://api.countapi.xyz/hit/Mobasheera/BITM-PYQs-visit", { mode: "no-cors" });
-            } catch (error) {
-                console.debug("Visit counter unavailable.", error);
-            }
-        }
-
-        async function trackDownload() {
-            try {
-                await fetch("https://api.countapi.xyz/hit/Mobasheera/BITM-PYQs-download", { mode: "no-cors" });
-            } catch (error) {
-                console.debug("Download counter unavailable.", error);
-            }
-        }
-
-        function renderPaperLinks(papers) {
-            paperList.replaceChildren();
-            const heading = document.createElement("p");
-            heading.className = "font-semibold text-gray-200 mb-2";
-            heading.textContent = "Available question papers:";
-            paperList.appendChild(heading);
-
-            papers.forEach((paper) => {
-                const link = document.createElement("a");
-                link.href = paper.url;
-                link.target = "_blank";
-                link.rel = "noopener noreferrer";
-                link.className = "block rounded-lg bg-gray-700 hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 px-4 py-3 text-sm text-green-300 transition-colors";
-                link.textContent = `⬇️ ${paper.label}`;
-                paperList.appendChild(link);
-            });
-            paperList.classList.remove("hidden");
-        }
-
-        function genericSubjectPapers(subject) {
-            const baseUrl = "https://www.bitmesra.ac.in/UploadedDocuments/adminexam/files/";
-            const years = [2020, 2021, 2022, 2023, 2024, 2025];
-            const semesters = ["MID", "END"];
-            const seasons = ["SP", "MO"];
-            const papers = [];
-
-            for (const year of years) {
-                for (const season of seasons) {
-                    for (const semester of semesters) {
-                        const shortYear = String(year).slice(-2);
-                        const fileName = `${subject} (${semester}_${season}${shortYear}).pdf`;
-                        papers.push({
-                            label: `${semester === "MID" ? "Mid" : "End"} Semester — ${season === "SP" ? "Spring" : "Monsoon"} ${year}`,
-                            url: `${baseUrl}${season}${year}%20QP/${encodeURIComponent(fileName).replace(/%2F/g, "/")}`
-                        });
-                    }
-                }
-            }
-            return papers;
-        }
-
-        async function downloadPapers() {
-            const subject = subjectSelect.value;
-            downloadButton.disabled = true;
-            downloadButton.classList.add("opacity-60", "cursor-not-allowed");
-            paperList.classList.add("hidden");
-            status.textContent = "Preparing question paper links...";
-
-            try {
-                await trackDownload();
-                const papers = subject === "EC257"
-                    ? EC257_PAPERS
-                    : genericSubjectPapers(subject);
-
-                renderPaperLinks(papers);
-                status.textContent = subject === "EC257"
-                    ? `Found ${papers.length} supplied EC257 papers. Choose a link to open or download its PDF.`
-                    : `Generated ${papers.length} paper links. Select a session below to open its PDF.`;
-            } catch (error) {
-                console.error("Could not prepare paper links:", error);
-                status.textContent = "Sorry, the paper links could not be prepared. Please try again.";
-            } finally {
-                downloadButton.disabled = false;
-                downloadButton.classList.remove("opacity-60", "cursor-not-allowed");
-            }
-        }
-
-        downloadButton.addEventListener("click", downloadPapers);
-        window.addEventListener("load", trackVisit);
-    </script>
-
-    <style>
-        @keyframes fade-in {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in { animation: fade-in 0.6s ease-out; }
-    </style>
+function getPapers(subject) {
+  if (subject === "EC257") return EC257_PAPERS;
+  // Existing subjects retain the project's original session/year URL convention.
+  const base = "https://bitmesra.ac.in/UploadedDocuments/adminexam/files/";
+  const years = [2020, 2021, 2022, 2023, 2024, 2025];
+  const papers = [];
+  for (const year of years) for (const season of ["SP","MO"]) for (const sem of ["MID","END"]) {
+    const yy = String(year).slice(-2);
+    const filename = `${subject} (${sem}_${season}${yy}).pdf`;
+    const folder = `${season}${year}%20QP/`;
+    papers.push({
+      label: `${sem === "MID" ? "Mid" : "End"} Semester — ${season === "SP" ? "Spring" : "Monsoon"} ${year}`,
+      url: base + folder + encodeURIComponent(filename).replace(/%2F/g, "/")
+    });
+  }
+  return papers;
+}
+function addResult(label, url) {
+  const li = document.createElement("li");
+  const a = document.createElement("a");
+  a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer";
+  a.className = "text-green-300 underline hover:text-green-200";
+  a.textContent = label;
+  li.append(a, document.createTextNode(" — opened / download requested"));
+  list.appendChild(li);
+}
+button.addEventListener("click", () => {
+  const subject = select.value;
+  if (!subject) { status.textContent = "Search and select a subject first."; return; }
+  const papers = getPapers(subject);
+  list.replaceChildren();
+  section.classList.remove("hidden");
+  status.textContent = `Launching ${papers.length} paper link(s). Your browser may block multiple pop-ups; allow pop-ups for this site if prompted.`;
+  papers.forEach((paper, i) => {
+    addResult(paper.label, paper.url);
+    // Each window.open occurs directly within the click handler to maximize popup permission.
+    const opened = window.open(paper.url, "_blank");
+    if (opened) opened.opener = null;
+    if (!opened) {
+      const fallback = document.createElement("li");
+      fallback.className = "text-yellow-300";
+      fallback.textContent = `${paper.label} — popup blocked; use the link above.`;
+      list.appendChild(fallback);
+    }
+  });
+});
+async function trackVisit() {
+  try { await fetch("https://api.countapi.xyz/hit/Mobasheera/BITM-PYQs-visit", {mode:"no-cors"}); } catch (_) {}
+}
+async function trackDownload() {
+  try { await fetch("https://api.countapi.xyz/hit/Mobasheera/BITM-PYQs-download", {mode:"no-cors"}); } catch (_) {}
+}
+button.addEventListener("click", trackDownload);
+window.addEventListener("load", trackVisit);
+</script>
 </body>
-
 </html>
