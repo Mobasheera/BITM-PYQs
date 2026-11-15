@@ -1,78 +1,58 @@
-# 📚 **BITM-PYQs Downloader**
+# 📚 BITM-PYQs Downloader
 
-> 🔗 [Live Demo on GitHub Pages](https://mobasheera.github.io/BITM-PYQs/)  
-> A minimal web tool for downloading previous year question papers (PYQs) of BIT Mesra, designed with TailwindCSS.  
+> 🔗 [Live Demo on GitHub Pages](https://mobasheera.github.io/BITM-PYQs/)
+>
+> A lightweight, mobile-friendly website for accessing previous-year question papers from BIT Mesra.
 
----
+## Features
 
-### ✨ **Features**
+- Simple subject selector and responsive interface.
+- Direct paper links for **EC257 — Electromagnetic Fields and Waves** (four supplied archive PDFs).
+- Generates the existing year/session links for the other subjects.
+- Opens each selected PDF in a new browser tab, where it can be viewed or downloaded.
+- Optional visit and download counters.
 
-- Simple and intuitive UI  
-- One-click PDF downloads for multiple years and semesters  
-- Fast loading with TailwindCSS  
-- **Mobile-friendly** and responsive design  
-- **Live visitor and download counters**  
--  College logo integrated as favicon and header image  
+## Subjects
 
----
+- MA107 MATHEMATICS-II
+- PH113 PHYSICS
+- BE101 BIOLOGICAL SCIENCE FOR ENGINEERS
+- CS101 PROGRAMMING FOR PROBLEM SOLVING
+- EE101 BASIC OF ELECTRICAL ENGINEERING
+- **EC257 ELECTROMAGNETIC FIELDS AND WAVES**
 
-### 🚀 **Getting Started**
+### EC257 papers included
 
-To run this locally or contribute:  
+| Examination | Session | PDF |
+|---|---|---|
+| End Semester | Spring 2023 | [Open PDF](https://archive.bitmesra.ac.in/UploadedDocuments/adminexam/files/SP2023%20QP/EC257%20ELECTROMAGNETIC%20FIELDS%20AND%20WAVES%20(END_SP23).pdf) |
+| Mid Semester | Spring 2023 | [Open PDF](https://archive.bitmesra.ac.in/UploadedDocuments/adminexam/files/SP2023%20QP/EC257%20ELECTROMAGNETIC%20FIELD%20AND%20WAVES%20(MID_SP23).pdf) |
+| End Semester | Spring 2022 | [Open PDF](https://archive.bitmesra.ac.in/UploadedDocuments/adminexam/files/SP2022%20QP/EC257%20ELECTROMAGNETIC%20FIELDS%20AND%20WAVES%20(END_SP22).pdf) |
+| Mid Semester | Spring 2020 | [Open PDF](https://archive.bitmesra.ac.in/UploadedDocuments/adminexam/files/SP2020%20QP/EC257%20ELECTROMAGNETIC%20FIELDS%20%26%20WAVES%20(MID_SP20).pdf) |
 
-```bash
-# Clone the repository
-git clone https://github.com/<your-github-username>/BITM-PYQs.git
+## Run locally
 
-# Navigate into the directory
-cd BITM-PYQs
+1. Download or clone this repository.
+2. Open `index.html` in a browser, or serve the folder with VS Code Live Server.
+3. Select a subject and click **Download PDFs**.
+4. Choose the paper link you want to open.
 
-# Open index.html in your browser or use Live Server extension in VS Code
-```
+No build step or package installation is required.
 
----
+## Tech stack
 
-### ⚡ **Tech Stack**
+- HTML5
+- Tailwind CSS (CDN)
+- Vanilla JavaScript
+- GitHub Pages
 
-- **HTML5**  
--  **TailwindCSS** (via CDN)  
-- **Vanilla JavaScript**  
-- **CountAPI** for tracking downloads  
-- **GitHub Pages** for deployment   
+## Notes
 
----
+- EC257 uses the exact archive URLs supplied for this update, rather than the generic URL generator used for the other listed subjects.
+- The other five subjects retain the existing generated URL convention.
+- PDF access depends on the BIT Mesra archive being available and the URLs remaining valid.
+- Visit/download counting is best-effort and does not block the downloader if the counter service is unavailable.
 
-## 🎯 **Live Counters**
+## License
 
-### 🌐 Total Website Visits
-![Website Visits](https://img.shields.io/badge/Visits-0-blue?style=for-the-badge&logo=github&labelColor=black&link=https://api.countapi.xyz/hit/Mobasheera/BITM-PYQs-visit)
-
-### 📥 Total Downloads
-![Downloads](https://img.shields.io/badge/Downloads-0-green?style=for-the-badge&logo=github&labelColor=black&link=https://api.countapi.xyz/hit/Mobasheera/BITM-PYQs-download)
-
----
-
-### 🤝 **Contributing**
-
-Contributions are welcome! 🚀  
-
-1. Fork the repo  
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)  
-3. Commit your changes (`git commit -m 'Add amazing feature'`)  
-4. Push to the branch (`git push origin feature/AmazingFeature`)  
-5. Open a **Pull Request**  
-
----
-
-### 📜 **License**
-
-Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for more details.
-
----
-
-### 🙌 **Acknowledgements**
-
-- [BIT Mesra](https://www.bitmesra.ac.in/)  
-- [TailwindCSS](https://tailwindcss.com/)  
-- [CountAPI](https://countapi.xyz/)  
-- [GitHub Pages](https://pages.github.com/)
+MIT. See [`LICENSE`](LICENSE).
